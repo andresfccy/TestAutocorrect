@@ -1,25 +1,27 @@
 import React, {useState} from 'react';
 
-const correctionsList = {
-  'wierd': 'weird',
-  'wolrd': 'world',
-  'reaily': 'really'
-};
-
-const AutocorrectTextarea = () => {
+const AutocorrectTextarea = ({corrections}) => {
   const [text, setText] = useState('');
 
   const handleChange = (e) => {
-    setText(e.target.value);
+    console.log(e.target.value);
+    if(e.target.value[e.target.value.length-1] === ' ')
+      validateText(e.target.value);
+    else
+      setText(e.target.value);
   }
 
   const handleSpace = (e) => {
-    if(e.keyCode === 32) {
-      const inputWordsList = text.split(' ');
-      setText(inputWordsList.map((o)=>{
-        return correctionsList[o] || o;
-      }).join(' '));
+    if (e.keyCode === 32) {
+      validateText(e.target.value);
     }
+  }
+
+  const validateText = (tempText) => {
+    const inputWordsList = tempText.split(' ');
+    setText(inputWordsList.map((o) => {
+      return corrections[o] || o;
+    }).join(' '));
   }
 
   return (
